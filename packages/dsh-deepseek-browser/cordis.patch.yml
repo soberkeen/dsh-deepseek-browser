@@ -1,0 +1,13 @@
+# dsh-deepseek-browser 的 bundle patch —— 必须含 insert 块。
+#
+# 这是「本包如何挂进 DSH 插件树」的声明文件。bundle patch 的 insert 就是把自己
+# 加进树的唯一手段；写成空列表 `[]` 等于本包不挂任何行 —— loader 里没有本插件的
+# entry，host 与 client 半边一起缺席，而且**不报错**（现象：左栏没有新入口、
+# /plugins/dsh-deepseek-browser/client.js 探测 404、apply() 从不执行）。
+#
+# id 用插件短名（与 profile 的 cordis.patch.yml 行寻址一致），name 用完整包名。
+# 装配路径 = profile.dependencies 里的 link + dsh.profile.bundles 列表里的包名
+# + 本文件的 insert。三处齐全才会真正加载。
+- insert:
+    - id: deepseek-browser
+      name: dsh-deepseek-browser

@@ -1,0 +1,48 @@
+{
+  "name": "dsh-deepseek-browser",
+  "version": "0.1.0",
+  "description": "在 DSH 左侧导航加入「DeepSeek 浏览器」入口：主面板内嵌网页版 DeepSeek（Electron webview，完整网页能力与独立登录态），并可增删切换到其他模型的免费网页版。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "license": "BSD-3-Clause",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "client-plugin",
+    "webview",
+    "browser",
+    "deepseek"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "@deepseek-ai/dsh-client-ui-slots": "*"
+  },
+  "scripts": {
+    "check": "node --check lib/index.js && node --check lib/client.js"
+  }
+}
