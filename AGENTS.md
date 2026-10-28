@@ -1,5 +1,12 @@
 # AGENTS.md — 本仓库索引（给 agent 与后来人）
 
+> **📍 仓库定位：插件 + 说明书二合一。**
+>
+> - `packages/dsh-deepseek-browser/` —— 一个能直接装的 DSH 插件；
+> - 本文件 + [`docs/DSH插件制作指导.md`](docs/DSH插件制作指导.md) —— **DSH 插件制作说明书**：做这个插件时逐条核实出来的机制、内核契约、踩坑与验收方式，供其他 agent 在别的机器上照着做。
+>
+> 为「写 DSH 插件」而来 → 直接看第 4 节「契约速查」；为「装插件」而来 → 看 [`README.md`](README.md)。
+
 > 一句话：这里放 **`dsh-deepseek-browser`** 插件（DSH 左栏「DeepSeek 浏览器」入口 + 主面板内嵌网页版 DeepSeek，可扩展到其他模型的免费网页版），以及做这个插件时逐条核实出来的 DSH 插件制作知识。
 >
 > 新会话接手时按顺序读：本文件 → [`docs/DSH插件制作指导.md`](docs/DSH插件制作指导.md) → `packages/dsh-deepseek-browser/lib/client.js`。**动手改 client 之前先读最后一节「踩坑」。**
@@ -39,7 +46,7 @@
 | 插件运行副本目录 | `~/.dsh/plugins-desk-v1/`（ASCII 路径、与 profile 同盘） |
 | 自建 skills | `~/.dsh/skills/`（`dsh-plugin-dev-guard`、`dsh-plugin-troubleshoot` 必读） |
 | asar 抽取工具 | 本仓库 `tools/asar.mjs` |
-| 内核抽取结果 | 任意临时目录，例如 `<临时目录>/dshx/app` |
+| 内核抽取结果 | 任意临时目录，例如 `<临时目录>/asar-out` |
 
 > 关于「官方 CLI」：有的 DSH 安装包 `<DSH 安装目录>/resources/runtime` 下只有 `x64\`、没有 `cli\bin\dsh.cmd`，那就走本仓库的「手装等价路径」（见指导文档第 4 节）。若机器上同时装了两套 DSH，别把 A 的 CLI 用到 B 的 profile 上。
 
