@@ -24,14 +24,14 @@ DSH 里和模型对话很方便，但「切到网页版用完整功能」一直�
 
 - **完整网页**：不是镜像、不是 API 代理、不是 iframe，是真实的 `chat.deepseek.com`；
 - **登录态独立**：跑在 DSH 主进程分配的专用分区里，与 DSH 自身会话隔离；同一进程内切站点/切面板不掉登录，重启应用需登录一次（分区是进程内存储，没有 `persist:` 前缀，插件侧改不了）；
-- **可扩展**：内置 DeepSeek / Kimi / 千问 / 豆包 / 智谱清言 / 秘塔，任一可删；还能自己加任意网址（比如其他模型的免费网页版）；
+- **可扩展**：内置 DeepSeek / Kimi / 千问 / 豆包 / 智谱清言，加上 ChatGPT / Claude / Gemini / Grok / Copilot / Perplexity，任一可删；还能自己加任意网址；
 - **不装额外依赖**：只是给 DSH 补一个入口和一块 `<webview>`，不代理、不改请求、不注入页面脚本。
 
 ## 使用
 
 1. 左栏点「DeepSeek 浏览器」（在「更多」正上方）；
 2. 顶部胶囊切换站点，`＋` 添加新站点，`⟳` 刷新，齿轮图标打开站点管理（增删 / 恢复默认）；
-3. 站点清单只保存在本机 `localStorage`（键 `dsh-deepseek-browser.sites.v1`），不随插件同步。
+3. 站点清单只保存在本机 `localStorage`（键 `dsh-deepseek-browser.sites.v1`；`.sites.rev` 记录默认清单版本，用于旧数据迁移），不随插件同步。
 
 ## 已知限制
 
@@ -46,6 +46,7 @@ DSH 里和模型对话很方便，但「切到网页版用完整功能」一直�
 | 文件下载 | 被禁 | `will-download` 一律 `preventDefault()` |
 | 站点内的外链 | 跳系统浏览器 | 主窗口 `setWindowOpenHandler` 一律 `deny` + `openExternal` |
 | 重启 DSH 后登录态 | 需重新登录 | 分区是每次启动随机生成的内存分区，见下方「兼容性」 |
+| 国外站点（ChatGPT / Claude / Gemini / Grok / Copilot / Perplexity） | 取决于本机网络 | 插件不代理、不改请求，能否打开与浏览器直接访问同一地址等价 |
 
 **为什么没有右键菜单**：DSH NEXT 的插件 host 半边跑在子进程里（日志 `spawned`），拿不到 `BrowserWindow/Menu`；渲染侧 `<webview>` 又不把 `context-menu` 事件交给宿主页面，`dshDesktop` 桥也没有菜单通道。两头都够不着，所以这一版不提供右键菜单 —— 需要时用 `Ctrl+V`，或点顶部 ↗ 用系统浏览器打开。`lib/context-menu.js` 里留了一套纯函数实现，等宿主未来开出菜单通道可直接复用。
 
@@ -100,7 +101,7 @@ New-Item -ItemType Junction -Path $target -Target $dst | Out-Null
 ```powershell
 node --check lib/index.js
 node --check lib/client.js
-node scripts/client-register-test.mjs      # client 离线契约测试，34 项
+node scripts/client-register-test.mjs      # client 离线契约测试，37 项
 node scripts/context-menu-test.mjs         # 右键菜单纯函数测试，37 项（当前未被引用）
 ```
 
@@ -119,7 +120,7 @@ node scripts/context-menu-test.mjs         # 右键菜单纯函数测试，37 �
 | `lib/index.js` | host 侧入口，**有意留空**（host 是子进程，拿不到 Electron API） |
 | `lib/context-menu.js` | 右键菜单纯函数（白名单 + 菜单项），当前未启用，备将来复用 |
 | `lib/client.js` | client 侧全部功能：左栏行 + 主面板 + 站点管理 + webview 租约/UA |
-| `scripts/client-register-test.mjs` | client 离线契约测试（假 DOM + 假 loader + 假桥），34 项 |
+| `scripts/client-register-test.mjs` | client 离线契约测试（假 DOM + 假 loader + 假桥），37 项 |
 | `scripts/context-menu-test.mjs` | 纯函数测试（白名单与菜单形态），37 项 |
 
 ## 许可

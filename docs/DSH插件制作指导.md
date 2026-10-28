@@ -678,7 +678,7 @@ Invoke-WebRequest -Uri 'https://deepseek-harness.github.io/deepseek-harness/refe
 `packages/dsh-deepseek-browser/` 是把本文全部结论落地的一份可运行实现：
 
 - 左栏入口（`sidebar.panellist`，order 100，落在「更多」上方）；
-- 主面板（`main` keyed slot）内嵌 `<webview>`，默认站点 DeepSeek，可增删切换到 Kimi / 千问 / 豆包 / 智谱 / 秘塔；
+- 主面板（`main` keyed slot）内嵌 `<webview>`，默认站点 DeepSeek，可增删切换到 Kimi / 千问 / 豆包 / 智谱清言，以及 ChatGPT / Claude / Gemini / Grok / Copilot / Perplexity；
 - 站点清单保存在 `localStorage`（`dsh-deepseek-browser.sites.v1`），登录态在 `persist:dsh-deepseek-browser` 分区；
 - 纯 Web 环境自动降级为说明页；
 - 离线契约测试 15 项。

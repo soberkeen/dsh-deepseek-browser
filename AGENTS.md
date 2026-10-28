@@ -28,7 +28,7 @@
 │     ├─ lib\index.js                       host 入口（**有意留空**：host 是子进程，见踩坑 12/13）
 │     ├─ lib\context-menu.js                【未启用】右键菜单纯函数，备将来注入式方案复用
 │     ├─ lib\client.js                      client（浏览器侧）全部功能
-│     ├─ scripts\client-register-test.mjs   离线契约测试（34 项，含 webview 租约与 UA 伪装）
+│     ├─ scripts\client-register-test.mjs   离线契约测试（37 项，含 webview 租约、UA 伪装与站点清单迁移）
 │     └─ scripts\context-menu-test.mjs      【未接线】纯函数测试（37 项），仍可单独跑
 ├─ tools\
 │  └─ asar.mjs                              asar 读取工具（list / cat / extract）
@@ -58,7 +58,7 @@ node --check packages\dsh-deepseek-browser\lib\index.js
 node --check packages\dsh-deepseek-browser\lib\context-menu.js
 node --check packages\dsh-deepseek-browser\lib\client.js
 
-# 离线契约测试（必跑，34 项；能拦住 factory 物化崩溃、webview 白屏与 UA 回归）
+# 离线契约测试（必跑，37 项；能拦住 factory 物化崩溃、webview 白屏、UA 与站点清单回归）
 node packages\dsh-deepseek-browser\scripts\client-register-test.mjs
 
 # 右键菜单纯函数测试（37 项；对应 lib/context-menu.js，当前未被 index.js 引用）
@@ -177,7 +177,7 @@ window.__DSB_HOOKS__.onGuestReady((guest) => {
 ## 7. 当前状态与待办
 
 - [x] 官方文档站抓取 + 本机内核契约核实（slots / client-modules / webview 策略 / 左栏行序 / guest broker）
-- [x] 插件源码：`package.json`、`cordis.patch.yml`、`lib/index.js`、`lib/context-menu.js`、`lib/client.js`、离线契约测试（client **34/34**、host **37/37**）
+- [x] 插件源码：`package.json`、`cordis.patch.yml`、`lib/index.js`、`lib/context-menu.js`、`lib/client.js`、离线契约测试（client **37/37**、host **37/37**）
 - [x] 指导文档（`docs/DSH插件制作指导.md`，13 节）+ 索引文档 + 插件 README
 - [x] 落地到 profile（deps + junction + bundles），左栏入口已显示
 - [x] 白屏归因并修复：client.js 改为 guest broker 租约链路，已同步到运行副本并核对 sha1

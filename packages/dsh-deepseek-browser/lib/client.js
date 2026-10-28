@@ -42,6 +42,8 @@ window.__ModuleLoader__.load({
 
 		const STYLE_ID = "dsh-deepseek-browser-style";
 		const SITES_KEY = "dsh-deepseek-browser.sites.v1";
+		const SITES_REV_KEY = "dsh-deepseek-browser.sites.rev";
+		const SITES_REV = "2";
 		const ACTIVE_KEY = "dsh-deepseek-browser.active.v1";
 
 		/**
@@ -122,14 +124,19 @@ window.__ModuleLoader__.load({
 			return hub;
 		}
 
-		/** 默认站点：国内可直连优先，全部可增删改。 */
+		/** 默认站点：国内可直连的排在前面，国外主流模型网页端排后面，全部可增删改。 */
 		const DEFAULT_SITES = [
 			{ id: "deepseek", label: "DeepSeek", url: "https://chat.deepseek.com/" },
 			{ id: "kimi", label: "Kimi", url: "https://www.kimi.com/" },
 			{ id: "qwen", label: "千问", url: "https://www.qianwen.com/" },
 			{ id: "doubao", label: "豆包", url: "https://www.doubao.com/chat/" },
 			{ id: "chatglm", label: "智谱清言", url: "https://chatglm.cn/" },
-			{ id: "metaso", label: "秘塔", url: "https://metaso.cn/" }
+			{ id: "chatgpt", label: "ChatGPT", url: "https://chatgpt.com/" },
+			{ id: "claude", label: "Claude", url: "https://claude.ai/" },
+			{ id: "gemini", label: "Gemini", url: "https://gemini.google.com/" },
+			{ id: "grok", label: "Grok", url: "https://grok.com/" },
+			{ id: "copilot", label: "Copilot", url: "https://copilot.microsoft.com/" },
+			{ id: "perplexity", label: "Perplexity", url: "https://www.perplexity.ai/" }
 		];
 
 		const PANEL_CSS = `
@@ -218,6 +225,28 @@ window.__ModuleLoader__.load({
 			return { id: id, label: label, url: url };
 		}
 
+		/**
+		 * 默认站点清单变更时的迁移：删掉已下线的默认项（秘塔），补上新增的默认项
+		 * （国外几个模型网页端），用户自己加的站点一律保留。
+		 */
+		const RETIRED_SITE_IDS = ["metaso"];
+
+		function migrateSites(list) {
+			const kept = [];
+			for (const site of list) {
+				if (RETIRED_SITE_IDS.indexOf(site.id) >= 0) continue;
+				kept.push(site);
+			}
+			const have = new Set();
+			for (const site of kept) have.add(site.id);
+			for (const site of DEFAULT_SITES) {
+				if (have.has(site.id)) continue;
+				have.add(site.id);
+				kept.push({ id: site.id, label: site.label, url: site.url });
+			}
+			return kept;
+		}
+
 		function readSites() {
 			try {
 				const raw = window.localStorage.getItem(SITES_KEY);
@@ -232,7 +261,11 @@ window.__ModuleLoader__.load({
 					seen.add(site.id);
 					list.push(site);
 				}
-				return list.length === 0 ? DEFAULT_SITES.slice() : list;
+				if (list.length === 0) return DEFAULT_SITES.slice();
+				if (window.localStorage.getItem(SITES_REV_KEY) === SITES_REV) return list;
+				const migrated = migrateSites(list);
+				writeSites(migrated);
+				return migrated;
 			} catch {
 				return DEFAULT_SITES.slice();
 			}
@@ -241,6 +274,7 @@ window.__ModuleLoader__.load({
 		function writeSites(list) {
 			try {
 				window.localStorage.setItem(SITES_KEY, JSON.stringify(list));
+				window.localStorage.setItem(SITES_REV_KEY, SITES_REV);
 			} catch {
 				/* 隐私模式或配额满：本次会话内仍然可用，只是不持久化。 */
 			}

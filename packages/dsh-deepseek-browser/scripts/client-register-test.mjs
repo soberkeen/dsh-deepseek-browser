@@ -460,6 +460,50 @@ if (exported && typeof exported.apply === 'function') {
 	}
 }
 
+/* ── 场景 3：默认站点清单迁移（下线秘塔 / 补上国外站点 / 保留自建站点） ─── */
+{
+	const legacy = makeHarness()
+	legacy.localStorageMock.setItem(
+		'dsh-deepseek-browser.sites.v1',
+		JSON.stringify([
+			{ id: 'deepseek', label: 'DeepSeek', url: 'https://chat.deepseek.com/' },
+			{ id: 'metaso', label: '秘塔', url: 'https://metaso.cn/' },
+			{ id: 'mine', label: '我的站点', url: 'https://example.com/chat' }
+		])
+	)
+	const entry3 = loadClient(legacy)
+	try {
+		const mod3 = entry3.factory(requireMock)
+		const registered3 = []
+		const ctx3 = {
+			effect: (fn) => fn(),
+			slots: {
+				register(options, component) {
+					registered3.push({ options, component })
+					return () => {}
+				},
+				inject(_deps, cb) {
+					if (typeof cb === 'function') cb(ctx3)
+				}
+			},
+			logger: { info() {}, warn() {}, error() {}, debug() {} }
+		}
+		mod3.apply(ctx3)
+		const panel3 = registered3.find((item) => item.options && item.options.name === 'main')
+		hookRecord = { states: [], stateIndex: 0, effects: [], refs: [], cleanups: [] }
+		renderDeep(panel3.component())
+		hookRecord = null
+		const stored = JSON.parse(legacy.localStorageMock.getItem('dsh-deepseek-browser.sites.v1'))
+		const ids = stored.map((site) => site.id)
+		const overseas = ['chatgpt', 'claude', 'gemini', 'grok', 'copilot', 'perplexity']
+		check('34 站点迁移：已下线的秘塔被移除', ids.indexOf('metaso') < 0, ids.join(','))
+		check('35 站点迁移：国外模型站点已补齐', overseas.every((id) => ids.indexOf(id) >= 0), ids.join(','))
+		check('36 站点迁移：用户自建站点保留', ids.indexOf('mine') >= 0, ids.join(','))
+	} catch (error) {
+		check('34 站点迁移：已下线的秘塔被移除', false, String((error && error.message) || error))
+	}
+}
+
 /* ── 汇总 ───────────────────────────────────────────────────────────────── */
 console.log(`\n=== ${pass}/${pass + fail} 通过 ===`)
 if (failures.length > 0) {
