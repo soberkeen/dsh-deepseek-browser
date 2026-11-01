@@ -27,6 +27,17 @@ DSH 里和模型对话很方便，但「切到网页版用完整功能」一直�
 - **可扩展**：内置 DeepSeek / Kimi / 千问 / 豆包 / 智谱清言，加上 ChatGPT / Claude / Gemini / Grok / Copilot / Perplexity，任一可删；还能自己加任意网址；
 - **不装额外依赖**：只是给 DSH 补一个入口和一块 `<webview>`，不代理、不改请求、不注入页面脚本。
 
+## 版本支持
+
+| 组件 | 实测版本 |
+| --- | --- |
+| DSH NEXT（桌面端） | **2.0.20-next** |
+| DSH 内核（`@deepseek-ai/dsh*` 包） | **0.2.1-rc.3** |
+| Electron（DSH 内置运行时） | 44.7.0（Chromium 140） |
+| 操作系统 | Windows 11 |
+
+> **支持声明**：本插件只在上述版本上完整实测通过。它依赖的 guest broker 租约、`<webview>` 装配策略、`sidebar.panellist` / `main` slot 契约均为 DSH 内核的**未公开实现细节**，DSH 升级后不保证继续可用；升级后若入口消失或面板白屏，按 [`AGENTS.md`](AGENTS.md)「踩坑」与指导文档里的排障树排查。纯 Web（浏览器内）环境不支持内嵌网页，会自动降级为说明页。
+
 ## 使用
 
 1. 左栏点「DeepSeek 浏览器」（在「更多」正上方）；

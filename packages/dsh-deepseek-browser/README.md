@@ -1,6 +1,8 @@
 # dsh-deepseek-browser
 
-在 **DSH（DeepSeek Harness）桌面端左侧导航**加入一个「DeepSeek 浏览器」入口：点开即在主面板内嵌网页版 DeepSeek，拥有独立登录态与完整网页能力，并可增删切换到其他模型的免费网页版（Kimi、千问、豆包、智谱清言、秘塔等）。
+在 **DSH（DeepSeek Harness）桌面端左侧导航**加入一个「DeepSeek 浏览器」入口：点开即在主面板内嵌网页版 DeepSeek，拥有独立登录态与完整网页能力，并可增删切换到其他模型的免费网页版（Kimi、千问、豆包、智谱清言，以及 ChatGPT、Claude、Gemini、Grok、Copilot、Perplexity）。
+
+> **版本支持**：在 DSH NEXT **2.0.20-next**（内核 `@deepseek-ai/dsh*` **0.2.1-rc.3**，内置 Electron 44.7.0，Windows 11）上完整实测；依赖内核未公开契约，其他 DSH 版本不保证可用，升级后异常请查仓库根目录 [`AGENTS.md`](../../AGENTS.md) 的排障条目。
 
 ## 它是什么
 
@@ -42,8 +44,8 @@ node --check lib/index.js
 node --check lib/client.js
 node --check lib/context-menu.js
 
-node scripts/client-register-test.mjs   # client 契约测试（34 项）
-node scripts/context-menu-test.mjs      # 纯函数测试（37 项，当前未接线）
+node scripts/client-register-test.mjs   # client 契约测试（37 项）
+node scripts/context-menu-test.mjs      # 纯函数测试（38 项，当前未接线）
 ```
 
 `lib/index.js` 是有意留空的 host 入口：DSH 的 host 插件跑在子进程里，拿不到 Electron 的 `Menu` / `BrowserWindow`，且顶层 `import ... from "electron"` 会导致整个 entry 加载失败、连带 client 半边一起消失。

@@ -168,7 +168,7 @@ window.__ModuleLoader__.load({
 
 `node --check` 只查语法，查不出「factory 物化时抛异常」这类运行期问题。**必须**有一个假 DOM + 假 `__ModuleLoader__` 的离线测试：把 `client.js` 读进来、在 `vm` 里跑、断言 `load()` 被调用、工厂返回 `{ apply, inject }`、`apply` 不抛、两个 slot 都注册了、注册项字段对得上。
 
-本仓库的可工作版本：`packages/dsh-deepseek-browser/scripts/client-register-test.mjs`（15 项断言，改插件时复制过去改名即可）。
+本仓库的可工作版本：`packages/dsh-deepseek-browser/scripts/client-register-test.mjs`（37 项断言，覆盖 slot 注册、webview 租约链路、UA 伪装与站点清单迁移；改插件时复制过去改名即可）。
 
 ---
 
@@ -679,8 +679,8 @@ Invoke-WebRequest -Uri 'https://deepseek-harness.github.io/deepseek-harness/refe
 
 - 左栏入口（`sidebar.panellist`，order 100，落在「更多」上方）；
 - 主面板（`main` keyed slot）内嵌 `<webview>`，默认站点 DeepSeek，可增删切换到 Kimi / 千问 / 豆包 / 智谱清言，以及 ChatGPT / Claude / Gemini / Grok / Copilot / Perplexity；
-- 站点清单保存在 `localStorage`（`dsh-deepseek-browser.sites.v1`），登录态在 `persist:dsh-deepseek-browser` 分区；
+- 站点清单保存在 `localStorage`（列表键 `dsh-deepseek-browser.sites.v1` + 版本键 `.sites.rev`，默认清单变更时自动迁移）；登录态在内核分配的随机内存分区（`dsh-sidebar-browser-<uuid>`，无 `persist:` 前缀，**重启后需重新登录**）；
 - 纯 Web 环境自动降级为说明页；
-- 离线契约测试 15 项。
+- 离线契约测试 37 项。
 
 改它之前先读本文件第 9 节，再读 `AGENTS.md` 的「踩坑」。

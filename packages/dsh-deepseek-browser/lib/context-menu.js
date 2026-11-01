@@ -43,7 +43,12 @@ export const ALLOWLIST = [
 	"doubao.com",
 	"chatglm.cn",
 	"zhipuai.cn",
-	"metaso.cn"
+	"chatgpt.com",
+	"claude.ai",
+	"gemini.google.com",
+	"grok.com",
+	"copilot.microsoft.com",
+	"perplexity.ai"
 ]
 
 /**

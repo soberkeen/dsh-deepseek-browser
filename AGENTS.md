@@ -29,7 +29,7 @@
 │     ├─ lib\context-menu.js                【未启用】右键菜单纯函数，备将来注入式方案复用
 │     ├─ lib\client.js                      client（浏览器侧）全部功能
 │     ├─ scripts\client-register-test.mjs   离线契约测试（37 项，含 webview 租约、UA 伪装与站点清单迁移）
-│     └─ scripts\context-menu-test.mjs      【未接线】纯函数测试（37 项），仍可单独跑
+│     └─ scripts\context-menu-test.mjs      【未接线】纯函数测试（38 项），仍可单独跑
 ├─ tools\
 │  └─ asar.mjs                              asar 读取工具（list / cat / extract）
 └─ README.md                               使用者视角说明
@@ -61,7 +61,7 @@ node --check packages\dsh-deepseek-browser\lib\client.js
 # 离线契约测试（必跑，37 项；能拦住 factory 物化崩溃、webview 白屏、UA 与站点清单回归）
 node packages\dsh-deepseek-browser\scripts\client-register-test.mjs
 
-# 右键菜单纯函数测试（37 项；对应 lib/context-menu.js，当前未被 index.js 引用）
+# 右键菜单纯函数测试（38 项；对应 lib/context-menu.js，当前未被 index.js 引用）
 node packages\dsh-deepseek-browser\scripts\context-menu-test.mjs
 ```
 
