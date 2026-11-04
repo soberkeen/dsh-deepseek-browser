@@ -184,4 +184,3 @@ window.__DSB_HOOKS__.onGuestReady((guest) => {
 - [—] guest 右键菜单：**已评估为不可行**（host 子进程无 Electron API + 渲染侧接不住 context-menu），用户定「先不做，用 Ctrl+V」；代码留在 `lib/context-menu.js` 未启用
 - [x] 重启验证：主面板能加载 `chat.deepseek.com`（登录页正常、UA 伪装后不再弹「使用环境异常」）
 - [—] 登录态跨重启：内核每次启动用 `dsh-sidebar-browser-${randomUUID()}` 随机内存分区，**插件侧无法持久化**（官方右侧栏浏览器同样如此）；本插件选择在 UI 里如实告知「重启后需重新登录」，不读取、不保存任何凭证
-- [ ] 可选：把本仓库知识固化成自建 skill

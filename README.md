@@ -1,6 +1,6 @@
 # dsh-deepseek-browser
 
-给 **DeepSeek Harness（DSH）** 桌面版加一个「DeepSeek 浏览器」入口：左栏一行，点开就是主面板里的网页版 DeepSeek，登录态、输入法、文件上传、剪贴板、下载都按真实浏览器行为走；并且可以增删、切换到其他模型的免费网页版。
+给 **DeepSeek Harness（DSH）** 桌面版加一个「DeepSeek 浏览器」入口：左栏一行，点开就是主面板里的网页版 DeepSeek，登录态、输入法、文件上传、Ctrl+C / Ctrl+V 复制粘贴都按真实浏览器行为走；并且可以增删、切换到其他模型的免费网页版。
 
 > 📖 **本仓库同时是一份 DSH 插件制作说明书。** 从「一个插件横跨四个平面」到 guest broker 租约、UA 风控、13 条真实踩坑，全部写在 [`docs/DSH插件制作指导.md`](docs/DSH插件制作指导.md) 与 [`AGENTS.md`](AGENTS.md)；想给 DSH 写自己的插件，直接读那两份，换台机器也能照着复现。
 
@@ -113,7 +113,7 @@ New-Item -ItemType Junction -Path $target -Target $dst | Out-Null
 node --check lib/index.js
 node --check lib/client.js
 node scripts/client-register-test.mjs      # client 离线契约测试，37 项
-node scripts/context-menu-test.mjs         # 右键菜单纯函数测试，37 项（当前未被引用）
+node scripts/context-menu-test.mjs         # 右键菜单纯函数测试，38 项（当前未被引用）
 ```
 
 改 `lib/client.js` 前必读 [`AGENTS.md`](AGENTS.md) 的「踩坑」一节：CSS 模板串里的裸反引号会让 factory 物化崩溃，`node --check` 查不出来；webview 绕过租约则静默白屏，契约测试第 14–25 项锁的正是这条链路。
@@ -132,7 +132,7 @@ node scripts/context-menu-test.mjs         # 右键菜单纯函数测试，37 �
 | `lib/context-menu.js` | 右键菜单纯函数（白名单 + 菜单项），当前未启用，备将来复用 |
 | `lib/client.js` | client 侧全部功能：左栏行 + 主面板 + 站点管理 + webview 租约/UA |
 | `scripts/client-register-test.mjs` | client 离线契约测试（假 DOM + 假 loader + 假桥），37 项 |
-| `scripts/context-menu-test.mjs` | 纯函数测试（白名单与菜单形态），37 项 |
+| `scripts/context-menu-test.mjs` | 纯函数测试（白名单与菜单形态），38 项 |
 
 ## 许可
 

@@ -664,11 +664,11 @@ Invoke-WebRequest -Uri 'https://deepseek-harness.github.io/deepseek-harness/refe
 - [ ] `main` 面板的 key 与左栏 id 一致
 - [ ] 所有 slot 注册都包在 `ctx.slots.inject(...)` 里
 - [ ] client 返回的 `inject` 是**服务名**（`"slots"`），不是包名
-- [ ] 内嵌网页走 `<webview>`（`partition: "persist:..."`），有纯 Web 环境降级提示
+- [ ] 内嵌网页走 `<webview>`（租约 + 主进程分配分区，见 6.2；不要自己编 `persist:` 前缀），有纯 Web 环境降级提示
 - [ ] `did-fail-load` 忽略 `errorCode === -3`
 - [ ] 插件副本在 ASCII 路径、与 profile 同盘
 - [ ] profile 三件套（deps / junction / bundles）齐备，且改前备份过 `package.json`
-- [ ] 重启后左栏出现入口、面板能打开目标站点、登录态在重启后保留
+- [ ] 重启后左栏出现入口、面板能打开目标站点、能完成登录（登录态重启后不保留，这是内核固定策略）
 - [ ] 卸载路径清楚：从 `dsh.profile.bundles` 移除即可恢复启动
 
 ---
